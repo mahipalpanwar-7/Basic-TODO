@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
 var todoList []Todo
 var nextID = 1
@@ -34,4 +39,31 @@ func main() {
 		}
 
 	}
+}
+
+func listTodo() {
+
+	if len(todoList) == 0 {
+		fmt.Println("No Todo Item Found")
+	}
+
+	for _, todo := range todoList {
+
+		status := "Pending"
+		if todo.IsCompleted {
+			status = "Completed"
+		}
+
+		fmt.Printf("%v - %v - %v\n", todo.Id, todo.Title, status)
+	}
+}
+
+func addTodo() {
+	fmt.Println("Enter the title of Todo:")
+	reader := bufio.NewReader(os.Stdin)
+	title, _ := reader.ReadString('\n')
+	title = strings.TrimSpace(title)
+	todo := Todo{Id: nextID, Title: title, IsCompleted: false}
+	todoList = append(todoList, todo)
+	nextID++
 }
