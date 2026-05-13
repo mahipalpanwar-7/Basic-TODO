@@ -21,8 +21,17 @@ func main() {
 		fmt.Println("5. Exit")
 		fmt.Println("Enter your choice:")
 
-		var choice int
-		fmt.Scan(&choice)
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+
+		input = strings.TrimSpace(input)
+
+		choice, err := strconv.Atoi(input)
+
+		if err != nil {
+			fmt.Println("Please enter a valid number ")
+			continue
+		}
 
 		switch choice {
 		case 1:
@@ -132,9 +141,9 @@ func deleteTodo() {
 
 		if id == todo.Id {
 			todoList = append(
-				todoList[:index], 
+				todoList[:index],
 				todoList[index+1:]...,
-		)
+			)
 			fmt.Println("Todo Item with ID", id, "is deleted successfully")
 			return
 		}
