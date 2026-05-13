@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -12,7 +13,7 @@ var nextID = 1
 
 func main() {
 	for {
-		fmt.Println("TODO App")
+		fmt.Println("\nTODO App")
 		fmt.Println("1. Show Todo list")
 		fmt.Println("2. Add item to Todo")
 		fmt.Println("3. Mark Todo as Completed")
@@ -34,6 +35,7 @@ func main() {
 			deleteTodo()
 		case 5:
 			fmt.Println("Bye")
+			return
 		default:
 			fmt.Println("Invalid Input")
 		}
@@ -45,8 +47,10 @@ func listTodo() {
 
 	if len(todoList) == 0 {
 		fmt.Println("No Todo Item Found")
+		return
 	}
 
+	fmt.Println("\nTodo list")
 	for _, todo := range todoList {
 
 		status := "Pending"
@@ -54,29 +58,54 @@ func listTodo() {
 			status = "Completed"
 		}
 
-		fmt.Printf("%v - %v - %v\n", todo.Id, todo.Title, status)
+		fmt.Printf("%d - %s - %s\n", todo.Id, todo.Title, status)
 	}
 }
 
 func addTodo() {
 	fmt.Println("Enter the title of Todo:")
+
 	reader := bufio.NewReader(os.Stdin)
+
 	title, _ := reader.ReadString('\n')
 	title = strings.TrimSpace(title)
-	todo := Todo{Id: nextID, Title: title, IsCompleted: false}
+
+	if title == "" {
+		fmt.Println("Todo title cannot be empty")
+		return
+	}
+
+	todo := Todo{
+		Id:          nextID,
+		Title:       title,
+		IsCompleted: false,
+	}
+
 	todoList = append(todoList, todo)
 	nextID++
+
 	fmt.Println("Item is added successfully")
 }
 
 func completeTodo() {
 	fmt.Println("Enter Todo ID to mark it completed:")
-	var id int
-	fmt.Scan(id)
 
-	for _, todo := range todoList {
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+
+	input = strings.TrimSpace(input)
+
+	id, err := strconv.Atoi(input)
+
+	if err != nil {
+		fmt.Println("Invalid ID")
+		return
+	}
+
+	for index, todo := range todoList {
 		if id == todo.Id {
-			todo.IsCompleted = true
+			todoList[index].IsCompleted = true
+
 			fmt.Println("Todo with", id, "is marked as Completed")
 			return
 		}
@@ -87,12 +116,26 @@ func completeTodo() {
 
 func deleteTodo() {
 	fmt.Println("Enter Todo is to delete it:")
-	var id int
-	fmt.Scan(id)
+
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+
+	input = strings.TrimSpace(input)
+
+	id, err := strconv.Atoi(input)
+
+	if err != nil {
+		fmt.Println("Invalid ID")
+		return
+	}
 	for index, todo := range todoList {
+
 		if id == todo.Id {
-			todoList = append(todoList[:index], todoList[index+1:]...)
-			fmt.Println("Todo Item with ID", id, "is deleted")
+			todoList = append(
+				todoList[:index], 
+				todoList[index+1:]...,
+		)
+			fmt.Println("Todo Item with ID", id, "is deleted successfully")
 			return
 		}
 	}
