@@ -115,12 +115,12 @@ func completeTodo() {
 		if id == todo.Id {
 			todoList[index].IsCompleted = true
 
-			fmt.Println("Todo with", id, "is marked as Completed")
+			fmt.Println("Todo with id", id, "is marked as Completed")
 			return
 		}
 	}
 
-	fmt.Println("Todo with", id, "not found")
+	fmt.Println("Todo with id", id, "not found")
 }
 
 func deleteTodo() {
@@ -148,5 +148,5 @@ func deleteTodo() {
 			return
 		}
 	}
-	fmt.Println("Todo with", id, "not found")
+	fmt.Println("Todo with id ", id, "not found")
 }
