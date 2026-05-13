@@ -67,3 +67,19 @@ func addTodo() {
 	todoList = append(todoList, todo)
 	nextID++
 }
+
+func completeTodo() {
+	fmt.Println("Enter Todo ID to mark it completed:")
+	var id int
+	fmt.Scan(id)
+
+	for _, todo := range todoList {
+		if id == todo.Id {
+			todo.IsCompleted = true
+			fmt.Println("Todo with", id, "is marked as Completed")
+			return
+		}
+	}
+
+	fmt.Println("Todo with", id, "not found")
+}
