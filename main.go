@@ -83,3 +83,17 @@ func completeTodo() {
 
 	fmt.Println("Todo with", id, "not found")
 }
+
+func deleteTodo(){
+	fmt.Println("Enter Todo is to delete it:")
+	var id int 
+	fmt.Scan(id)
+	for index,todo := range todoList{
+		if id==todo.Id{
+			todoList = append(todoList[:index],todoList[index+1:]...)
+			fmt.Println("Todo Item with ID",id, "is deleted")
+			return
+		}
+	}
+	fmt.Println("Todo with", id ,"not found")
+}
